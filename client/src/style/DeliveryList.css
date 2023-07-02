@@ -1,0 +1,28 @@
+
+.delivery-list{
+  /* padding: 15px; */
+  overflow-y: scroll;
+  align-items: center;
+  justify-content: center;
+  /* border: 1px solid; */
+  height: 45%;
+  display: flex;
+/* width:100%; */
+
+}
+.delivery-list-titre
+{
+  /* height: 100%; */
+width: 60%;
+text-align: center;
+overflow-x: scroll;
+}
+.delivery-list-button{
+  /* background-color: rebeccapurple; */
+  height: 40px;
+  display: flex;
+  text-align: center;
+  width: 40%;
+  justify-content: center;
+  margin: 0 auto;
+}
