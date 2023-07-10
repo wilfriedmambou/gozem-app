@@ -1,13 +1,15 @@
-// import res from 'express/lib/response';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HomeMap from '../components/Map';
-const Home = ({ socket }) => {
+const WebTracker = ({ socket }) => {
+  ////////
+
   const navigate = useNavigate();
   const [PackageId, setPackageId] = useState('');
   const [Package, setPackage] = useState('');
   const [Delivery, setDelivery] = useState('');
   const [BrowserLocation, setBrowserLocation] = useState('');
+  const [ErrorPackage, setErrorPackage] = useState('');
   // const [browser_location, setBrowserLocation_lng] = useState('');
   socket.on('delivery_update', (payload) => {
     console.log('payload', payload.delivery_object);
@@ -19,6 +21,8 @@ const Home = ({ socket }) => {
   // console.log('handleTest', test);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(PackageId.length, 'length');
+    if (PackageId.length < 8) return;
 
     try {
       console.log(PackageId, 'del///');
@@ -61,8 +65,13 @@ const Home = ({ socket }) => {
           socket.connect();
 
           // console.log('test---------');
-        } catch (error) {
-          console.log('err activity_delivery fetch', error);
+        } catch (ex) {
+          if (ex.response && ex.response.status === 400) {
+            setErrorPackage(ex.response.data);
+            console.log(Error, 'EEEEE');
+          } else if (ex.response && ex.response.status === 404) {
+            setErrorPackage(ex.response.data);
+          }
         }
         console.log('activity_existe');
       }
@@ -70,9 +79,15 @@ const Home = ({ socket }) => {
       localStorage.setItem('Package', result);
 
       setPackage(result);
-    } catch (err) {
-      // setErr(err.message);
-      console.log(err, 'erreur');
+    } catch (ex) {
+      console.log(ex, 'ex');
+      if (ex.response && ex.response.status === 404) {
+        setErrorPackage(ex.response.data);
+        console.log(ex.response.data, 'EEEEE11');
+      } else if (ex.response && ex.response.status === 404) {
+        setErrorPackage(ex.response.data);
+        console.log(ex.response.data, 'EEEEE11');
+      }
     }
   };
 
@@ -88,7 +103,7 @@ const Home = ({ socket }) => {
           <div className="container-input-button">
             <input
               type="text"
-              minLength={6}
+              minLength={16}
               id="username"
               className="package__input package__user"
               placeholder="Enter Package Id"
@@ -99,6 +114,7 @@ const Home = ({ socket }) => {
             <button className="home__cta package_validate_button">Track</button>
           </div>
         </form>
+        <div>{ErrorPackage && ErrorPackage}</div>
         <div className="container-map-package-delivery">
           <div className="package-delivery-infos">
             <div className="delivery_Detail">
@@ -143,4 +159,4 @@ const Home = ({ socket }) => {
   );
 };
 
-export default Home;
+export default WebTracker;

@@ -12,7 +12,7 @@ const Admin = () => {
   console.log('Delivery', Deliverydata);
   console.log('Packagedata', Packagedata);
   const fetchPackageList = () => {
-    fetch('http://localhost:4000/package/')
+    fetch('http://localhost:4000/api/package/')
       .then((response) => {
         return response.json();
       })
@@ -21,7 +21,7 @@ const Admin = () => {
       });
   };
   const fetchDeliveryList = () => {
-    fetch('http://localhost:4000/delivery/')
+    fetch('http://localhost:4000/api/delivery/')
       .then((response) => {
         return response.json();
       })
